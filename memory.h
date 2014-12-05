@@ -11,4 +11,6 @@ struct mem_block {
 };
 typedef struct mem_block memBlock;
 
-int init_memBlock();
+int init_memBlock(memBlock *block, int size);
+
+void printBlock(memBlock *block);
