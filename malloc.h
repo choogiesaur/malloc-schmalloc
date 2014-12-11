@@ -1,6 +1,14 @@
 #ifndef MALLOC_H
 #define MALLOC_H
 
+#define MEMSIZE 5000
+
+struct mem_block {
+    int size;
+    char data[MEMSIZE];
+};
+typedef struct mem_block memBlock;
+
 /*
  * Memory entry struct. Holds the size of the block, whether it is free or not, and pointers
  * to the next and the previous memory entry structs.
