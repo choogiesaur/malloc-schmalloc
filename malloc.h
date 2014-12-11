@@ -7,7 +7,7 @@
  */
 struct mem_entry {
     unsigned int size;
-    unsigned int free;
+    unsigned int isFree;
     struct mem_entry *prev;
     struct mem_entry *next;
 };
