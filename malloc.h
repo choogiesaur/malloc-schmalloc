@@ -8,7 +8,8 @@
 struct MemEntry {
     unsigned int size;
     unsigned int free;
-    struct MemEntry *next, *prev;
+    struct MemEntry *prev;
+    struct MemEntry *next;
 };
 
 /*
