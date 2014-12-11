@@ -30,13 +30,13 @@ void * myMalloc(unsigned int size, char * file, int line){
 		{
 			p = p->succ;					// too small
 		}
-		else if ( !p->isfree )
+		else if ( !p->isFree )
 		{
 			p = p->succ;					// in use
 		}
 		else if ( p->size < (size + sizeof(memEntry)) )
 		{
-			p->isfree = 0;					// too small to chop up
+			p->isFree = 0;					// too small to chop up
 			ret = (char *)p + sizeof(memEntry);
 			SLInsert(sl, ret);
 			return ret;
@@ -53,9 +53,9 @@ void * myMalloc(unsigned int size, char * file, int line){
 			//end add
 			p->succ = succ;
 			succ->size = p->size - sizeof(memEntry) - size;
-			succ->isfree = 1;
+			succ->isFree = 1;
 			p->size = size;
-			p->isfree = 0;
+			p->isFree = 0;
 			last = (p == last) ? succ : last;
 			ret = (char *)p + sizeof(memEntry);
 			SLInsert(sl, ret);
@@ -72,7 +72,7 @@ void * myMalloc(unsigned int size, char * file, int line){
 		p->prev = 0;
 		p->succ = 0;
 		p->size = size;
-		p->isfree = 0;
+		p->isFree = 0;
 		root = last = p;
 		ret = (char *)p + sizeof(memEntry);
 		sl = SLCreate(compare_pointers);
@@ -85,7 +85,7 @@ void * myMalloc(unsigned int size, char * file, int line){
 		p->prev = last;
 		p->succ = last->succ;
 		p->size = size;
-		p->isfree = 0;
+		p->isFree = 0;
 		last->succ = p;
 		last = p;
 		ret = (char *)p + sizeof(memEntry);
@@ -118,12 +118,12 @@ void myFree(void * p, char * file, int line){
     
 	ptr = (memEntry *)((char *)p - sizeof(memEntry));
 
-	if ( (pred = ptr->prev) != 0 && pred->isfree ){
+	if ( (pred = ptr->prev) != 0 && pred->isFree ){
 		pred->size += sizeof(memEntry) + ptr->size;	// merge with predecessor
 		
 		pred->next  = 	ptr->next;
 		//begin added
-		ptr->isfree = 		1;
+		ptr->isFree = 		1;
 		pred->next  = 	ptr->next;
 		if(ptr->next != 0)
 			ptr->next->prev = pred;
@@ -132,18 +132,18 @@ void myFree(void * p, char * file, int line){
 		printf( "BKR freeing block %#x merging with predecessor new size is %d.\n", p, pred->size );
 	}
 	else{   
-        if (ptr->isfree == 0) {
+        if (ptr->isFree == 0) {
         	printf( "BKR freeing block %#x.\n", p );
         	SLRemove(sl, p);
-            ptr->isfree = 1;
+            ptr->isFree = 1;
             pred = ptr;
         } else printf("BKR you're double freeing. denied. \n");
 	}
-	if ( (succ = ptr->next) != 0 && succ->isfree ){
+	if ( (succ = ptr->next) != 0 && succ->isFree ){
 		pred->size += sizeof(memEntry) + succ->size;	// merge with successor
 		pred->next = succ->next;
 		//begin added
-		pred->isfree = 1;
+		pred->isFree = 1;
         
 		if(succ->succ != 0) {
 			succ->next->prev = pred;
