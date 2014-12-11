@@ -5,7 +5,7 @@
 #include	<string.h>
 #include	<errno.h>
 
-struct SortedList * sl;
+struct SortedListPtr sl;
 
 #define BUG printf("%i\n", __LINE__);
 
