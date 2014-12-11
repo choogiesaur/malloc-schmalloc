@@ -17,10 +17,10 @@ int compare_pointers(void * p1, void * p2){
 }
 
 void * myMalloc(unsigned int size, char * file, int line){
-	static struct MemEntry *	root = 0;
-	static struct MemEntry *	last = 0;
-	struct MemEntry *		p;
-	struct MemEntry *		succ;
+	static struct memEntry *	root = 0;
+	static struct memEntry *	last = 0;
+	struct memEntry *		p;
+	struct memEntry *		succ;
 	void *                  ret;
     
 	p = root;
@@ -34,16 +34,16 @@ void * myMalloc(unsigned int size, char * file, int line){
 		{
 			p = p->succ;					// in use
 		}
-		else if ( p->size < (size + sizeof(struct MemEntry)) )
+		else if ( p->size < (size + sizeof(struct memEntry)) )
 		{
 			p->isfree = 0;					// too small to chop up
-			ret = (char *)p + sizeof(struct MemEntry);
+			ret = (char *)p + sizeof(struct memEntry);
 			SLInsert(sl, ret);
 			return ret;
 		}
 		else
 		{
-			succ = (struct MemEntry *)((char *)p + sizeof(struct MemEntry) + size);
+			succ = (struct memEntry *)((char *)p + sizeof(struct memEntry) + size);
 			succ->prev = p;
 			succ->succ = p->succ;
 			//p->succ->prev = succ;
@@ -52,17 +52,17 @@ void * myMalloc(unsigned int size, char * file, int line){
 				p->succ->prev = succ;
 			//end add
 			p->succ = succ;
-			succ->size = p->size - sizeof(struct MemEntry) - size;
+			succ->size = p->size - sizeof(struct memEntry) - size;
 			succ->isfree = 1;
 			p->size = size;
 			p->isfree = 0;
 			last = (p == last) ? succ : last;
-			ret = (char *)p + sizeof(struct MemEntry);
+			ret = (char *)p + sizeof(struct memEntry);
 			SLInsert(sl, ret);
 			return ret;
 		}
 	}
-	if ( (p = (struct MemEntry *)sbrk( sizeof(struct MemEntry) + size )) == (void *)-1 )
+	if ( (p = (struct memEntry *)sbrk( sizeof(struct memEntry) + size )) == (void *)-1 )
 	{
 		return 0;
 	}
@@ -74,7 +74,7 @@ void * myMalloc(unsigned int size, char * file, int line){
 		p->size = size;
 		p->isfree = 0;
 		root = last = p;
-		ret = (char *)p + sizeof(struct MemEntry);
+		ret = (char *)p + sizeof(struct memEntry);
 		sl = SLCreate(compare_pointers);
 		SLInsert(sl, ret);
 		return ret;
@@ -88,7 +88,7 @@ void * myMalloc(unsigned int size, char * file, int line){
 		p->isfree = 0;
 		last->succ = p;
 		last = p;
-		ret = (char *)p + sizeof(struct MemEntry);
+		ret = (char *)p + sizeof(struct memEntry);
 		SLInsert(sl, ret);
 		return ret;
 	}
@@ -102,9 +102,9 @@ void * myCalloc(unsigned int size, char * file, int line){
 }
 
 void myFree(void * p, char * file, int line){
-	struct MemEntry *ptr;
-	struct MemEntry *pred;
-	struct MemEntry *succ;
+	struct memEntry *ptr;
+	struct memEntry *pred;
+	struct memEntry *succ;
     
 	if (sl == NULL) {
 		printf("No memory was ever malloced. \n");
@@ -116,10 +116,10 @@ void myFree(void * p, char * file, int line){
 		return;
 	}
     
-	ptr = (struct MemEntry *)((char *)p - sizeof(struct MemEntry));
+	ptr = (struct memEntry *)((char *)p - sizeof(struct memEntry));
 
 	if ( (pred = ptr->prev) != 0 && pred->isfree ){
-		pred->size += sizeof(struct MemEntry) + ptr->size;	// merge with predecessor
+		pred->size += sizeof(struct memEntry) + ptr->size;	// merge with predecessor
 		
 		pred->next = ptr->next;
 		//begin added
@@ -140,7 +140,7 @@ void myFree(void * p, char * file, int line){
         } else printf("BKR you're double freeing. denied. \n");
 	}
 	if ( (succ = ptr->next) != 0 && succ->isfree ){
-		pred->size += sizeof(struct MemEntry) + succ->size;	// merge with successor
+		pred->size += sizeof(struct memEntry) + succ->size;	// merge with successor
 		pred->next = succ->next;
 		//begin added
 		pred->isfree = 1;
