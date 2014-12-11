@@ -17,8 +17,8 @@ int compare_pointers(void * p1, void * p2){
 }
 
 void * myMalloc(unsigned int size, char * file, int line){
-	static memEntry *	root = 0;
-	static memEntry *	last = 0;
+	static memEntry 	*root = 0;
+	static memEntry 	*last = 0;
 	memEntry *		p;
 	memEntry *		succ;
 	void *                  ret;
