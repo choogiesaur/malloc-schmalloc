@@ -16,13 +16,13 @@ struct MemEntry {
  * string for the filename, and an int for the line number. Returns a void pointer on success and
  * NULL on failure.
  */
-void * mymalloc(unsigned int size, char * fn, int ln);
+void * myMalloc(unsigned int size, char * fn, int ln);
 
 /*
  * Our free function. Takes a void pointer to a memory chunk to be freed, a character string
  * for the filename, and an int for the line number. Doesn't return anything but will print
  * errors onto the screen if it encounters any.
  */
-void myfree(void * p, char * fn, int ln);
+void myFree(void * p, char * fn, int ln);
 
 #endif
