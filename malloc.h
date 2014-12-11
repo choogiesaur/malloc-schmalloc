@@ -18,7 +18,10 @@ struct MemEntry {
  */
 void * myMalloc(unsigned int size, char * fn, int ln);
 
-void * myCalloc( unsigned int size, char * file, int line );
+/*
+ * 
+ */
+void * myCalloc(unsigned int size, char * file, int line);
 
 /*
  * Our free function. Takes a void pointer to a memory chunk to be freed, a character string
