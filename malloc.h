@@ -5,12 +5,13 @@
  * Memory entry struct. Holds the size of the block, whether it is free or not, and pointers
  * to the next and the previous memory entry structs.
  */
-struct memEntry {
+struct mem_entry {
     unsigned int size;
     unsigned int free;
-    struct memEntry *prev;
-    struct memEntry *next;
+    struct mem_entry *prev;
+    struct mem_entry *next;
 };
+typedef struct mem_entry memEntry;
 
 /*
  * Our malloc function. Takes an int containing the size of the chunk to be allocated, a character
