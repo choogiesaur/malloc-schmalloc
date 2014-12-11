@@ -5,11 +5,11 @@
  * Memory entry struct. Holds the size of the block, whether it is free or not, and pointers
  * to the next and the previous memory entry structs.
  */
-struct MemEntry {
+struct memEntry {
     unsigned int size;
     unsigned int free;
-    struct MemEntry *prev;
-    struct MemEntry *next;
+    struct memEntry *prev;
+    struct memEntry *next;
 };
 
 /*
