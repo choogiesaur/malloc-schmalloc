@@ -7,8 +7,8 @@
 
 struct SortedListPtr sl;
 
-#define malloc(x) mymalloc( x, __FILE__, __LINE__ )
-#define free(x) myfree( x, __FILE__, __LINE__ )
+#define malloc(x) myMalloc( x, __FILE__, __LINE__ )
+#define free(x) myFree( x, __FILE__, __LINE__ )
 
 #define BUG printf("%i\n", __LINE__);
 
@@ -17,7 +17,7 @@ int compare_pointers(void * p1, void * p2)
 	return p1 - p2;
 }
 
-void * mymalloc( unsigned int size, char * file, int line )
+void * myMalloc( unsigned int size, char * file, int line )
 {
 	static struct MemEntry *	root = 0;
 	static struct MemEntry *	last = 0;
@@ -97,7 +97,7 @@ void * mymalloc( unsigned int size, char * file, int line )
 	return 0;
 }
 
-void myfree( void * p, char * file, int line )
+void myFree( void * p, char * file, int line )
 {
 	struct MemEntry *		ptr;
 	struct MemEntry *		pred;
