@@ -1,9 +1,9 @@
 #include	"malloc.h"
 #include    "sorted-list.h"
-#include	<unistd.h>
 #include	<stdio.h>
 #include	<string.h>
 #include	<errno.h>
+#include	<unistd.h>
 
 struct SortedListPtr sl = SLCreate();
 
