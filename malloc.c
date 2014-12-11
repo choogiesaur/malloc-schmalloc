@@ -12,13 +12,11 @@ struct SortedListPtr sl = SLCreate();
 
 #define BUG printf("%i\n", __LINE__);
 
-int compare_pointers(void * p1, void * p2) 
-{
+int compare_pointers(void * p1, void * p2){
 	return p1 - p2;
 }
 
-void * myMalloc( unsigned int size, char * file, int line )
-{
+void * myMalloc(unsigned int size, char * file, int line){
 	static struct MemEntry *	root = 0;
 	static struct MemEntry *	last = 0;
 	struct MemEntry *		p;
@@ -97,14 +95,13 @@ void * myMalloc( unsigned int size, char * file, int line )
 	return 0;
 }
 
-void * myCalloc( unsigned int size, char * file, int line ){
+void * myCalloc(unsigned int size, char * file, int line){
 	void *ptr = myMalloc(size);
 	memset((char *)ptr, 0, size);
 	return;
 }
 
-void myFree( void * p, char * file, int line )
-{
+void myFree(void * p, char * file, int line){
 	struct MemEntry *		ptr;
 	struct MemEntry *		pred;
 	struct MemEntry *		succ;
