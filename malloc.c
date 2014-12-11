@@ -19,9 +19,9 @@ int compare_pointers(void * p1, void * p2){
 void * myMalloc(unsigned int size, char * file, int line){
 	static memEntry 	*root = 0;
 	static memEntry 	*last = 0;
-	memEntry *		p;
-	memEntry *		succ;
-	void *                  ret;
+	memEntry 		*p;
+	memEntry 		*succ;
+	void 			*ret;
     
 	p = root;
 	while ( p != 0 )
@@ -121,10 +121,10 @@ void myFree(void * p, char * file, int line){
 	if ( (pred = ptr->prev) != 0 && pred->isfree ){
 		pred->size += sizeof(memEntry) + ptr->size;	// merge with predecessor
 		
-		pred->next = ptr->next;
+		pred->next  = 	ptr->next;
 		//begin added
-		ptr->isfree=1;
-		pred->next = ptr->next;
+		ptr->isfree = 		1;
+		pred->next  = 	ptr->next;
 		if(ptr->next != 0)
 			ptr->next->prev = pred;
 		//end added
