@@ -97,6 +97,10 @@ void * myMalloc( unsigned int size, char * file, int line )
 	return 0;
 }
 
+void * myCalloc( unsigned int size, char * file, int line ){
+	return;
+}
+
 void myFree( void * p, char * file, int line )
 {
 	struct MemEntry *		ptr;
