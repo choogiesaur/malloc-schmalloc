@@ -14,8 +14,8 @@ typedef struct mem_block memBlock;
  * to the next and the previous memory entry structs.
  */
 struct mem_entry {
-    unsigned int size;
     unsigned int isFree;
+    unsigned int size;
     struct mem_entry *prev;
     struct mem_entry *next;
 };
