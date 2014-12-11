@@ -7,8 +7,8 @@
 
 struct SortedListPtr sl = SLCreate();
 
-#define malloc(x) myMalloc(x, __FILE__, __LINE__)
-#define free(x) myFree(x, __FILE__, __LINE__)
+//#define malloc(x) myMalloc(x, __FILE__, __LINE__)
+//#define free(x) myFree(x, __FILE__, __LINE__)
 
 #define BUG printf("%i\n", __LINE__);
 
