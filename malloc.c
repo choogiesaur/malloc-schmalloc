@@ -102,38 +102,36 @@ void * myCalloc(unsigned int size, char * file, int line){
 }
 
 void myFree(void * p, char * file, int line){
-	struct MemEntry *		ptr;
-	struct MemEntry *		pred;
-	struct MemEntry *		succ;
+	struct MemEntry *ptr;
+	struct MemEntry *pred;
+	struct MemEntry *succ;
     
 	if (sl == NULL) {
 		printf("No memory was ever malloced. \n");
 		return;
 	}
 
-    if(SLFind(sl, p) == NULL) {
-        printf("This memory was never malloced\n");
-        return;
-    }
+	if(SLSearch(sl, p) == NULL) {
+		printf("This memory was never malloced\n");
+		return;
+	}
     
 	ptr = (struct MemEntry *)((char *)p - sizeof(struct MemEntry));
 
-	if ( (pred = ptr->prev) != 0 && pred->isfree )
-	{
+	if ( (pred = ptr->prev) != 0 && pred->isfree ){
 		pred->size += sizeof(struct MemEntry) + ptr->size;	// merge with predecessor
 		
-		pred->succ = ptr->succ;
+		pred->next = ptr->next;
 		//begin added
 		ptr->isfree=1;
-		pred->succ = ptr->succ;
-		if(ptr->succ != 0)
-			ptr->succ->prev = pred;
+		pred->next = ptr->next;
+		if(ptr->next != 0)
+			ptr->next->prev = pred;
 		//end added
 		SLRemove(sl, p);
 		printf( "BKR freeing block %#x merging with predecessor new size is %d.\n", p, pred->size );
 	}
-	else
-	{   
+	else{   
         if (ptr->isfree == 0) {
         	printf( "BKR freeing block %#x.\n", p );
         	SLRemove(sl, p);
@@ -141,15 +139,15 @@ void myFree(void * p, char * file, int line){
             pred = ptr;
         } else printf("BKR you're double freeing. denied. \n");
 	}
-	if ( (succ = ptr->succ) != 0 && succ->isfree )
-	{
+	if ( (succ = ptr->next) != 0 && succ->isfree ){
 		pred->size += sizeof(struct MemEntry) + succ->size;	// merge with successor
-		pred->succ = succ->succ;
+		pred->next = succ->next;
 		//begin added
 		pred->isfree = 1;
         
-		if(succ->succ != 0)
-			succ->succ->prev=pred;
+		if(succ->succ != 0) {
+			succ->next->prev = pred;
+		}
 		//end added
 
 		SLRemove(sl, p);
