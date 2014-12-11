@@ -98,6 +98,8 @@ void * myMalloc( unsigned int size, char * file, int line )
 }
 
 void * myCalloc( unsigned int size, char * file, int line ){
+	void *ptr = myMalloc(size);
+	memset((char *)ptr, 0, size);
 	return;
 }
 
