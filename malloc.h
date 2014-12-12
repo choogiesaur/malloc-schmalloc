@@ -39,4 +39,8 @@ void * myCalloc(unsigned int size, char * fn, int ln);
  */
 void myFree(void * p, char * fn, int ln);
 
+/*
+ *this is a comparator function to be used by our SortedList.
+ */
+int ptrcmp(void * ptr1, void * ptr2);
 #endif
