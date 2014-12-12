@@ -5,7 +5,8 @@
 #include	<errno.h>
 #include	<unistd.h>
 
-SortedListPtr sl = SLCreate();
+SortedListPtr sl;
+// = SLCreate();
 
 //#define malloc(x) myMalloc(x, __FILE__, __LINE__)
 //#define free(x) myFree(x, __FILE__, __LINE__)
@@ -71,7 +72,7 @@ void * myMalloc(unsigned int size, char * file, int line){
 		p->isFree = 0;
 		root = last = p;
 		ret = (char *)p + sizeof(memEntry);
-		sl = SLCreate(compare_pointers);
+		sl = SLCreate(ptrcmp, ptrcmp);
 		SLInsert(sl, ret);
 		return ret;
 	}
@@ -92,7 +93,7 @@ void * myMalloc(unsigned int size, char * file, int line){
 }
 
 void * myCalloc(unsigned int size, char * file, int line){
-	void *ptr = myMalloc(size);
+	void *ptr = myMalloc(size,file,line);
 	memset((char *)ptr, 0, size);
 	return;
 }
@@ -141,7 +142,7 @@ void myFree(void * p, char * file, int line){
 		//begin added
 		pred->isFree = 1;
         
-		if(succ->succ != 0) {
+		if(succ->next != 0) {
 			succ->next->prev = pred;
 		}
 		//end added
