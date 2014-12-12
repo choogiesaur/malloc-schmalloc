@@ -72,7 +72,7 @@ void * myMalloc(unsigned int size, char * file, int line){
 		p->isFree = 0;
 		root = last = p;
 		ret = (char *)p + sizeof(memEntry);
-		sl = SLCreate(ptrcmp, ptrcmp);
+		sl = SLCreate(ptrcmp);
 		SLInsert(sl, ret);
 		return ret;
 	}
