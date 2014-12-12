@@ -1,20 +1,16 @@
 #include	"malloc.h"
-#include    "sorted-list.h"
+#include   	"sorted-list.h"
 #include	<stdio.h>
 #include	<string.h>
 #include	<errno.h>
 #include	<unistd.h>
 
-struct SortedListPtr sl = SLCreate();
+SortedListPtr sl = SLCreate();
 
 //#define malloc(x) myMalloc(x, __FILE__, __LINE__)
 //#define free(x) myFree(x, __FILE__, __LINE__)
 
 #define BUG printf("%i\n", __LINE__);
-
-int compare_pointers(void * p1, void * p2){
-	return p1 - p2;
-}
 
 void * myMalloc(unsigned int size, char * file, int line){
 	static memEntry 	*root = 0;
@@ -153,4 +149,8 @@ void myFree(void * p, char * file, int line){
 		SLRemove(sl, p);
 		printf( "BKR freeing block %#x merging with successor new size is %d.\n", p, pred->size );
 	}
+}
+
+int ptrcmp(void * ptr1, void * ptr2){
+	return ptr1 - ptr2;
 }
