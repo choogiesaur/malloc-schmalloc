@@ -65,7 +65,7 @@ void * myMalloc(unsigned int size, char * file, int line){
 	}
 	else if ( last == 0 )				// first block created
 	{
-		printf( "BKR making first chunk size %d\n", size );
+		//printf( "making first chunk size %d\n", size );
 		p->prev = 0;
 		p->next = 0;
 		p->size = size;
@@ -78,7 +78,7 @@ void * myMalloc(unsigned int size, char * file, int line){
 	}
 	else						// other blocks appended
 	{
-		printf( "BKR making another chunk size %d\n", size );
+		//printf( "making another chunk size %d\n", size );
 		p->prev = last;
 		p->next = last->next;
 		p->size = size;
@@ -126,15 +126,15 @@ void myFree(void * p, char * file, int line){
 			ptr->next->prev = pred;
 		//end added
 		SLRemove(sl, p);
-		printf( "BKR freeing block %#x merging with predecessor new size is %d.\n", p, pred->size );
+		//printf( "BKR freeing block %#x merging with predecessor new size is %d.\n", p, pred->size );
 	}
 	else{   
         if (ptr->isFree == 0) {
-        	printf( "BKR freeing block %#x.\n", p );
+        	//printf( "BKR freeing block %#x.\n", p );
         	SLRemove(sl, p);
             ptr->isFree = 1;
             pred = ptr;
-        } else printf("BKR you're double freeing. denied. \n");
+        } else printf("you're double freeing. denied. \n");
 	}
 	if ( (succ = ptr->next) != 0 && succ->isFree ){
 		pred->size += sizeof(memEntry) + succ->size;	// merge with successor
@@ -148,7 +148,7 @@ void myFree(void * p, char * file, int line){
 		//end added
 
 		SLRemove(sl, p);
-		printf( "BKR freeing block %#x merging with successor new size is %d.\n", p, pred->size );
+		//printf( "freeing block %#x merging with successor new size is %d.\n", p, pred->size );
 	}
 }
 
