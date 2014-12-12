@@ -88,6 +88,13 @@ SortedListPtr SLCreate(CompareFuncT cf, DestructFuncT df);
  */
 void SLDestroy(SortedListPtr list);
 
+/*
+ * SLFind finds a given object in a sorted list, if it exists.
+ *
+ * If the function succeeds, it returns a pointer to the data, othrewise it returns NULL.
+ */
+
+void *SLFind(SortedListPtr list, void *newObj);
 
 /*
  * SLInsert inserts a given object into a sorted list, maintaining sorted
