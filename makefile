@@ -11,6 +11,7 @@ malloc-schmalloc: malloc.o testing.o
 malloc.o: malloc.c malloc.h
 	$(COMPILER) $(CCFLAGS) -c malloc.c
 
+#
 #main.o: main.c memory.h
 #	$(COMPILER) $(CCFLAGS) -c main.c
 
