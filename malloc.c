@@ -24,11 +24,11 @@ void * myMalloc(unsigned int size, char * file, int line){
 	{
 		if ( p->size < size )
 		{
-			p = p->succ;					// too small
+			p = p->next;					// too small
 		}
 		else if ( !p->isFree )
 		{
-			p = p->succ;					// in use
+			p = p->next;					// in use
 		}
 		else if ( p->size < (size + sizeof(memEntry)) )
 		{
@@ -41,13 +41,13 @@ void * myMalloc(unsigned int size, char * file, int line){
 		{
 			succ = (memEntry *)((char *)p + sizeof(memEntry) + size);
 			succ->prev = p;
-			succ->succ = p->succ;
-			//p->succ->prev = succ;
+			succ->next = p->next;
+			//p->next->prev = succ;
 			//begin add
-			if(p->succ != 0)
-				p->succ->prev = succ;
+			if(p->next != 0)
+				p->next->prev = succ;
 			//end add
-			p->succ = succ;
+			p->next = succ;
 			succ->size = p->size - sizeof(memEntry) - size;
 			succ->isFree = 1;
 			p->size = size;
@@ -66,7 +66,7 @@ void * myMalloc(unsigned int size, char * file, int line){
 	{
 		printf( "BKR making first chunk size %d\n", size );
 		p->prev = 0;
-		p->succ = 0;
+		p->next = 0;
 		p->size = size;
 		p->isFree = 0;
 		root = last = p;
@@ -79,10 +79,10 @@ void * myMalloc(unsigned int size, char * file, int line){
 	{
 		printf( "BKR making another chunk size %d\n", size );
 		p->prev = last;
-		p->succ = last->succ;
+		p->next = last->next;
 		p->size = size;
 		p->isFree = 0;
-		last->succ = p;
+		last->next = p;
 		last = p;
 		ret = (char *)p + sizeof(memEntry);
 		SLInsert(sl, ret);
