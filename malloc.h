@@ -22,16 +22,15 @@ struct mem_entry {
 typedef struct mem_entry memEntry;
 
 /*
- * Our malloc function. Takes an int containing the size of the chunk to be allocated, a character
- * string for the filename, and an int for the line number. Returns a void pointer on success and
- * NULL on failure.
+ *malloc function. takes in: int for the size of the requested block (size), string for the filename (fn)
+ *and an int for the line #. this fxn should return NULL if there is an error.
  */
 void * myMalloc(unsigned int size, char * fn, int ln);
 
-/*
- * 
+/* ~!@#$%^&*()_-+= <<< EXTRA CREDIT!!! >>> =+-_)(*&^%$#@!~
+ * this function calls malloc, but with the added functionality of setting all bytes to zero.
  */
-void * myCalloc(unsigned int size, char * file, int line);
+void * myCalloc(unsigned int size, char * fn, int ln);
 
 /*
  * Our free function. Takes a void pointer to a memory chunk to be freed, a character string
