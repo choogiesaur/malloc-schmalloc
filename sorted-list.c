@@ -14,7 +14,7 @@
  * You need to fill in this function as part of your implementation.
  */
 
-SortedListPtr SLCreate(CompareFuncT cf, DestructFuncT df) {
+SortedListPtr SLCreate(CompareFuncT cf) {
   // Creating and mallocing the sl to be returned via the pointer sl.
   SortedListPtr sl;
   sl = (struct SortedList *)malloc(sizeof(struct SortedList));
@@ -25,7 +25,6 @@ SortedListPtr SLCreate(CompareFuncT cf, DestructFuncT df) {
   }
   // Set the compare and destroy functions to the ones SLCreate was given.
   sl->compareFunct = cf;
-  sl->destroyFunct = df;
   return sl;
 }
 
