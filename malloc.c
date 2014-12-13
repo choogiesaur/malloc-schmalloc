@@ -16,62 +16,56 @@ SortedListPtr sl;
 void * myMalloc(unsigned int size, char * file, int line){
 	static memEntry 	*root = 0;
 	static memEntry 	*last = 0;
-	memEntry 		*p;
+	memEntry 		*ptr;
 	memEntry 		*succ;
 	void 			*ret;
     
-	p = root;
-	while ( p != 0 )
+	ptr = root;
+	while ( ptr != 0 )
 	{
-		if ( p->size < size )
-		{
-			p = p->next;					// too small
+		if ( ptr->size < size ) {
+			ptr = ptr->next;					// too small
 		}
-		else if ( !p->isFree )
-		{
-			p = p->next;					// in use
+		else if ( !ptr->isFree ) {
+			ptr = ptr->next;					// in use
 		}
-		else if ( p->size < (size + sizeof(memEntry)) )
-		{
-			p->isFree = 0;					// too small to chop up
-			ret = (char *)p + sizeof(memEntry);
+		else if ( ptr->size < (size + sizeof(memEntry)) ) {
+			ptr->isFree = 0;					// too small to chop up
+			ret = (char *)ptr + sizeof(memEntry);
 			SLInsert(sl, ret);
 			return ret;
 		}
-		else
-		{
-			succ = (memEntry *)((char *)p + sizeof(memEntry) + size);
-			succ->prev = p;
-			succ->next = p->next;
+		else {
+			succ = (memEntry *)((char *)ptr + sizeof(memEntry) + size);
+			succ->prev = ptr;
+			succ->next = ptr->next;
 			//p->next->prev = succ;
 			//begin add
-			if(p->next != 0)
-				p->next->prev = succ;
+			if(ptr->next != 0)
+				ptr->next->prev = succ;
 			//end add
-			p->next = succ;
-			succ->size = p->size - sizeof(memEntry) - size;
+			ptr->next = succ;
+			succ->size = ptr->size - sizeof(memEntry) - size;
 			succ->isFree = 1;
-			p->size = size;
-			p->isFree = 0;
-			last = (p == last) ? succ : last;
-			ret = (char *)p + sizeof(memEntry);
+			ptr->size = size;
+			ptr->isFree = 0;
+			last = (ptr == last) ? succ : last;
+			ret = (char *)ptr + sizeof(memEntry);
 			SLInsert(sl, ret);
 			return ret;
 		}
 	}
-	if ( (p = (memEntry *)sbrk( sizeof(memEntry) + size )) == (void *)-1 )
-	{
+	if ( (ptr = (memEntry *)sbrk( sizeof(memEntry) + size )) == (void *)-1 ) {
 		return 0;
 	}
-	else if ( last == 0 )				// first block created
-	{
+	else if ( last == 0 ) {			// first block created
 		//printf( "making first chunk size %d\n", size );
-		p->prev = 0;
-		p->next = 0;
-		p->size = size;
-		p->isFree = 0;
-		root = last = p;
-		ret = (char *)p + sizeof(memEntry);
+		ptr->prev = 0;
+		ptr->next = 0;
+		ptr->size = size;
+		ptr->isFree = 0;
+		root = last = ptr;
+		ret = (char *)ptr + sizeof(memEntry);
 		sl = SLCreate(ptrcmp);
 		SLInsert(sl, ret);
 		return ret;
@@ -79,13 +73,13 @@ void * myMalloc(unsigned int size, char * file, int line){
 	else						// other blocks appended
 	{
 		//printf( "making another chunk size %d\n", size );
-		p->prev = last;
-		p->next = last->next;
-		p->size = size;
-		p->isFree = 0;
-		last->next = p;
-		last = p;
-		ret = (char *)p + sizeof(memEntry);
+		ptr->prev = last;
+		ptr->next = last->next;
+		ptr->size = size;
+		ptr->isFree = 0;
+		last->next = ptr;
+		last = ptr;
+		ret = (char *)ptr + sizeof(memEntry);
 		SLInsert(sl, ret);
 		return ret;
 	}
