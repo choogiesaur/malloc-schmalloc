@@ -15,12 +15,14 @@ typedef struct mem_entry memEntry;
 
 /*
  * Malloc function. takes in: int for the size of the requested block (size), string for the filename (fn)
- * and an int for the line #. this fxn should return NULL if there is an error.
+ * and an int for the line # (ln). This function should return the pointer to the data on success and 0
+ * on failure.
  */
 void * myMalloc(unsigned int size, char * fn, int ln);
 
-/* ~!@#$%^&*()_-+= <<< EXTRA CREDIT!!! >>> =+-_)(*&^%$#@!~
+/* <<< EXTRA CREDIT!!! >>>
  * This function calls malloc, but with the added functionality of setting all bytes to zero.
+ * Returns the pointer to the data on success and 0 on failure.
  */
 void * myCalloc(unsigned int size, char * fn, int ln);
 
