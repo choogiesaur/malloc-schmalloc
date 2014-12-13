@@ -108,7 +108,7 @@ void myFree(void * p, char * file, int line){
 		return;
 	}
 
-	if(SLSearch(sl, p) == NULL) {
+	if(SLFind(sl, p) == NULL) {
 		printf("This memory was never malloced\n");
 		return;
 	}
