@@ -1,8 +1,8 @@
+#include "malloc.h"
+#define malloc( x ) myMalloc( x, __FILE__ , __LINE__ )
+#define free( x ) myFree( x, __FILE__, __LINE__ )
 
-#define malloc( x ) my_malloc( x, __FILE__ , __LINE__ )
-#define free( x ) my_free( x, __FILE__, __LINE__ )
-
-void freeing_pointers_not_allocated() 
+void non_alloc_free() 
 {
 	printf("\n--------------------------------");
 	printf("\nBegin **freeing pointer not allocated** test. \n\n");
@@ -17,7 +17,7 @@ void freeing_pointers_not_allocated()
 
 }
 
-void freeing_pointers_not_returned_from_malloc()
+void non_malloc_free()
 {
 	printf("\n--------------------------------");
 	printf("\nBegin **freeing pointers not returned from malloc** test. \n\n");
@@ -33,7 +33,7 @@ void freeing_pointers_not_returned_from_malloc()
 
 }
 
-void redundant_freeing_of_the_same_pointer() 
+void multi_free() 
 {	
 	printf("\n--------------------------------");
 	printf("\nBegin **redundant freeing** test. \n\n");
@@ -49,7 +49,7 @@ void redundant_freeing_of_the_same_pointer()
 	printf("\n------------------------------\n\n");
 }
 
-void perfectly_valid() 
+void valid() 
 {
 	printf("\n--------------------------------");
 	printf("\nBegin **perfectly valid** test. \n\n");
@@ -69,9 +69,9 @@ void perfectly_valid()
 
 int main(int argc, char const *argv[])
 {
-	freeing_pointers_not_allocated();
-	freeing_pointers_not_returned_from_malloc();
-	redundant_freeing_of_the_same_pointer();
-	perfectly_valid();
+	non_alloc_free();
+	non_malloc_free();
+	multi_free();
+	valid();
 	return 0;
 }
