@@ -109,7 +109,7 @@ void myFree(void * p, char * fn, int ln){
 	ptr = (memEntry *)((char *)p - sizeof(memEntry));
 
 	if ( (before = ptr->prev) != 0 && before->isFree ){
-		before->size += sizeof(memEntry) + ptr->size;	// merge with before
+		before->size += sizeof(memEntry) + ptr->size;	// Combining with before mementry
 		
 		before->next  = 	ptr->next;
 		//begin added
@@ -120,15 +120,15 @@ void myFree(void * p, char * fn, int ln){
 		}
 		//end added
 		SLRemove(sl, p);
-		//printf( "Freeing block %#x merging with beforeecessor new size is %d.\n", p, before->size );
+		//printf( "Freeing block %#x combining with beforeecessor new size is %d.\n", p, before->size );
 	}
 	else{   
-        if (ptr->isFree == 0) {
-        	//printf( "BKR freeing block %#x.\n", p );
-        	SLRemove(sl, p);
-            ptr->isFree = 1;
-            before = ptr;
-        } else printf("you're double freeing. denied. \n");
+		if (ptr->isFree == 0) {
+			//printf( "BKR freeing block %#x.\n", p );
+			SLRemove(sl, p);
+		    ptr->isFree = 1;
+		    before = ptr;
+		} else printf("Error: Attempted to double free a pointer. Request denied. \n");
 	}
 	if ( (after = ptr->next) != 0 && after->isFree ){
 		before->size += sizeof(memEntry) + after->size;	// merge with successor
