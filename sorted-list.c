@@ -80,10 +80,10 @@ int SLInsert(SortedListPtr list, void *newObj) {
 			return 0;
 		}
 		/* 
-		* If the current content is "smaller" than the content to be inserted, then
+		* If the current content is "bigger" than the content to be inserted, then
 		* the content to be inserted must come right before the current content.
 		*/
-		else if (list->compareFunct(curr->content, newObj) < 0) {
+		else if (list->compareFunct(curr->content, newObj) > 0) {
 			// Check to see if the new node is to be put in the front of the list.
 			if (prev == NULL) {
 				list->front = newNode;
@@ -100,7 +100,7 @@ int SLInsert(SortedListPtr list, void *newObj) {
 			}
 		}
 		/* 
-		* If the current content is "bigger" than the content to be inserted, then
+		* If the current content is "smaller" than the content to be inserted, then
 		* simply continue, fr the correct position must be somewhere after the
 		* current node.
 		*/ 
