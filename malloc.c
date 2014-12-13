@@ -108,13 +108,13 @@ void myFree(void * p, char * fn, int ln){
 		before->size += sizeof(memEntry) + ptr->size;	// Combining with before mementry
 		
 		before->next  = 	ptr->next;
-		//begin added
+		//adding
 		ptr->isFree = 		1;
 		before->next  = 	ptr->next;
 		if(ptr->next != 0){
 			ptr->next->prev = before;
 		}
-		//end added
+		//finish adding
 		SLRemove(sl, p);
 		//printf( "Freeing block %#x combining with beforeecessor new size is %d.\n", p, before->size );
 	}
@@ -129,13 +129,13 @@ void myFree(void * p, char * fn, int ln){
 	if ( (after = ptr->next) != 0 && after->isFree ){
 		before->size += sizeof(memEntry) + after->size;	// merge with successor
 		before->next = after->next;
-		//begin added
+		//adding
 		before->isFree = 1;
         
 		if(after->next != 0) {
 			after->next->prev = before;
 		}
-		//end added
+		//finish adding
 
 		SLRemove(sl, p);
 		//printf( "freeing block %#x merging with successor new size is %d.\n", p, before->size );
