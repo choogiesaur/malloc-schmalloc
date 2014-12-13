@@ -95,7 +95,7 @@ void * myMalloc(unsigned int size, char * file, int line){
 void * myCalloc(unsigned int size, char * file, int line){
 	void *ptr = myMalloc(size,file,line);
 	memset((char *)ptr, 0, size);
-	return;
+	return ptr;
 }
 
 void myFree(void * p, char * file, int line){
