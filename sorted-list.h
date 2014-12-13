@@ -79,7 +79,7 @@ typedef void (*DestructFuncT)( void * );
  * You need to fill in this function as part of your implementation.
  */
 
-SortedListPtr SLCreate(CompareFuncT cf, DestructFuncT df);
+SortedListPtr SLCreate(CompareFuncT cf);
 
 /*
  * SLDestroy destroys a list, freeing all dynamically allocated memory.
