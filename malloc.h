@@ -1,7 +1,7 @@
 #ifndef MALLOC_H
 #define MALLOC_H
 
-#define MEMSIZE 5000
+#define MEMSIZE 10000
 
 struct mem_block {
     int size;
