@@ -11,138 +11,138 @@ SortedListPtr sl;
 //#define malloc(x) myMalloc(x, __FILE__, __LINE__)
 //#define free(x) myFree(x, __FILE__, __LINE__)
 
-#define BUG printf("%i\n", __LINE__);
-
-void * myMalloc(unsigned int size, char * file, int line){
-	static memEntry 	*root = 0;
-	static memEntry 	*last = 0;
+void * myMalloc(unsigned int size, char * fn, int ln) {
+	void 			*ret_ptr;
+	
 	memEntry 		*ptr;
-	memEntry 		*succ;
-	void 			*ret;
+	memEntry 		*successor;
+	
+	static memEntry 	*head = 0; //points to front of memEntry list
+	static memEntry 	*tail = 0; //points to back of memEntry list
     
-	ptr = root;
+	ptr = head;
 	while ( ptr != 0 )
 	{
-		if ( ptr->size < size ) {
-			ptr = ptr->next;					// too small
-		}
-		else if ( !ptr->isFree ) {
-			ptr = ptr->next;					// in use
-		}
-		else if ( ptr->size < (size + sizeof(memEntry)) ) {
-			ptr->isFree = 0;					// too small to chop up
-			ret = (char *)ptr + sizeof(memEntry);
-			SLInsert(sl, ret);
-			return ret;
-		}
-		else {
-			succ = (memEntry *)((char *)ptr + sizeof(memEntry) + size);
-			succ->prev = ptr;
-			succ->next = ptr->next;
-			//p->next->prev = succ;
-			//begin add
-			if(ptr->next != 0)
-				ptr->next->prev = succ;
-			//end add
-			ptr->next = succ;
-			succ->size = ptr->size - sizeof(memEntry) - size;
-			succ->isFree = 1;
+		if ( ptr->size < size ) {	//This block is too small.
+			ptr = ptr->next;
+		} else if ( !ptr->isFree ) {	//This block is not free.
+			ptr = ptr->next;
+		} else if ( ptr->size < (size + sizeof(memEntry)) ) {	//This block is not big enough to cut up.
+			ptr->isFree = 0;
+			ret_ptr = (char *)ptr + sizeof(memEntry);
+			
+			SLInsert(sl, ret_ptr);
+			return ret_ptr;
+		} else {
+			successor = (memEntry *)((char *)ptr + sizeof(memEntry) + size); //offset from where ptr was; accounts for size of a mementry and the size of the block
+			successor->prev = ptr;
+			successor->next = ptr->next;
+			
+			if(ptr->next != 0){
+				ptr->next->prev = successor;
+			}
+			
+			ptr->next = successor;
+			successor->size = ptr->size - sizeof(memEntry) - size;
+			successor->isFree = 1;
 			ptr->size = size;
 			ptr->isFree = 0;
-			last = (ptr == last) ? succ : last;
-			ret = (char *)ptr + sizeof(memEntry);
-			SLInsert(sl, ret);
-			return ret;
+			tail = (ptr == tail) ? successor : tail;
+			ret_ptr = (char *)ptr + sizeof(memEntry);
+			
+			SLInsert(sl, ret_ptr);
+			return ret_ptr;
 		}
 	}
 	if ( (ptr = (memEntry *)sbrk( sizeof(memEntry) + size )) == (void *)-1 ) {
 		return 0;
-	}
-	else if ( last == 0 ) {			// first block created
-		//printf( "making first chunk size %d\n", size );
+	} else if ( tail == 0 ) { // tail is null, adds first one
 		ptr->prev = 0;
 		ptr->next = 0;
 		ptr->size = size;
 		ptr->isFree = 0;
-		root = last = ptr;
-		ret = (char *)ptr + sizeof(memEntry);
+		head = tail = ptr;
+		ret_ptr = (char *)ptr + sizeof(memEntry);
 		sl = SLCreate(ptrcmp);
-		SLInsert(sl, ret);
-		return ret;
-	}
-	else						// other blocks appended
-	{
-		//printf( "making another chunk size %d\n", size );
-		ptr->prev = last;
-		ptr->next = last->next;
+		
+		SLInsert(sl, ret_ptr);
+		return ret_ptr;
+	} else	{ // otherwise add to existing list
+		ptr->prev = tail;
+		ptr->next = tail->next;
 		ptr->size = size;
 		ptr->isFree = 0;
-		last->next = ptr;
-		last = ptr;
-		ret = (char *)ptr + sizeof(memEntry);
-		SLInsert(sl, ret);
-		return ret;
+		tail->next = ptr;
+		tail = ptr;
+		ret_ptr = (char *)ptr + sizeof(memEntry);
+		
+		SLInsert(sl, ret_ptr);
+		return ret_ptr;
 	}
+	printf("Error: Malloc failed in file %s at line %d\n", fn, ln);
 	return 0;
 }
 
-void * myCalloc(unsigned int size, char * file, int line){
-	void *ptr = myMalloc(size,file,line);
+void * myCalloc(unsigned int size, char * fn, int ln){
+	void *ptr = myMalloc(size,fn,ln);
+	if (ptr == 0) {
+		printf("Error: Calloc failed in file %s at line %d\n", fn, ln);
+		return 0;
+	}
 	memset((char *)ptr, 0, size);
 	return ptr;
 }
 
-void myFree(void * p, char * file, int line){
+void myFree(void * p, char * fn, int ln){
 	memEntry *ptr;
-	memEntry *pred;
-	memEntry *succ;
+	memEntry *before;
+	memEntry *after;
     
 	if (sl == NULL) {
 		printf("No memory was ever malloced. \n");
 		return;
-	}
-
-	if(SLFind(sl, p) == NULL) {
+	} if(SLFind(sl, p) == NULL) {
 		printf("This memory was never malloced\n");
 		return;
 	}
     
 	ptr = (memEntry *)((char *)p - sizeof(memEntry));
 
-	if ( (pred = ptr->prev) != 0 && pred->isFree ){
-		pred->size += sizeof(memEntry) + ptr->size;	// merge with predecessor
+	if ( (before = ptr->prev) != 0 && before->isFree ){
+		before->size += sizeof(memEntry) + ptr->size;	// merge with before
 		
-		pred->next  = 	ptr->next;
+		before->next  = 	ptr->next;
 		//begin added
 		ptr->isFree = 		1;
-		pred->next  = 	ptr->next;
-		if(ptr->next != 0)
-			ptr->next->prev = pred;
+		before->next  = 	ptr->next;
+		if(ptr->next != 0){
+			ptr->next->prev = before;
+		}
 		//end added
 		SLRemove(sl, p);
-		//printf( "BKR freeing block %#x merging with predecessor new size is %d.\n", p, pred->size );
+		//printf( "Freeing block %#x merging with beforeecessor new size is %d.\n", p, before->size );
 	}
 	else{   
         if (ptr->isFree == 0) {
         	//printf( "BKR freeing block %#x.\n", p );
         	SLRemove(sl, p);
             ptr->isFree = 1;
-            pred = ptr;
+            before = ptr;
         } else printf("you're double freeing. denied. \n");
 	}
-	if ( (succ = ptr->next) != 0 && succ->isFree ){
-		pred->size += sizeof(memEntry) + succ->size;	// merge with successor
-		pred->next = succ->next;
+	if ( (after = ptr->next) != 0 && after->isFree ){
+		before->size += sizeof(memEntry) + after->size;	// merge with successor
+		before->next = after->next;
 		//begin added
-		pred->isFree = 1;
+		before->isFree = 1;
         
-		if(succ->next != 0) {
-			succ->next->prev = pred;
+		if(after->next != 0) {
+			after->next->prev = before;
 		}
 		//end added
 
 		SLRemove(sl, p);
-		//printf( "freeing block %#x merging with successor new size is %d.\n", p, pred->size );
+		//printf( "freeing block %#x merging with successor new size is %d.\n", p, before->size );
 	}
 }
 
