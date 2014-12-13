@@ -99,10 +99,10 @@ void myFree(void * p, char * fn, int ln){
 	memEntry *after;
     
 	if (sl == NULL) {
-		printf("No memory was ever malloced. \n");
+		printf("No malloced/calloced memory in the list.\n");
 		return;
 	} if(SLFind(sl, p) == NULL) {
-		printf("This memory was never malloced\n");
+		printf("This memory pointer was never malloced/calloced in the list.\n");
 		return;
 	}
     
