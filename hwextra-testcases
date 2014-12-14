@@ -1,4 +1,5 @@
 *****USE MAKEFILE TARGET 'test' TO CREATE AND EXECUTE THIS TESTPLAN*****
+*****NOTE: WE USE RED TO DENOTE AN ERROR AND GREEN TO DENOTE A SUCCESS*****
 
 ----------------------------------------------------------
 ***Non Allocated Free***
