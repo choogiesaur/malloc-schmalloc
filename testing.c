@@ -23,7 +23,7 @@ void non_malloc_calloc_free() {
 	char *ptr = (char *)malloc(100);
 	free(ptr + 50);
 	char *ptr2 = (char *)calloc(100);
-	free(ptr + 50);
+	free(ptr2 + 50);
 	printf("\n=== End non-malloc'd/non-calloc'd pointer free test ===");
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
 }
