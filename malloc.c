@@ -30,7 +30,7 @@ void * myMalloc(unsigned int size, char * fn, int ln) {
 			SLInsert(sl, ret_ptr);
 			printf("Alloc\'d block 0x%x\n", ret_ptr);
 			return ret_ptr;
-		} else { // Cretaing the zplit up block to come after our newly allocated block.
+		} else { // Creating the split-up block to come after our newly allocated block.
 			after = (memEntry *)((char *)ptr + sizeof(memEntry) + size); //offset from where ptr was; accounts for size of a mementry and the size of the block
 			after->prev = ptr;
 			after->next = ptr->next;
@@ -109,7 +109,7 @@ void myFree(void * p, char * fn, int ln){
 	ptr = (memEntry *)((char *)p - sizeof(memEntry));
 
 	if ( (before = ptr->prev) != 0 && before->isFree ){
-		before->size += sizeof(memEntry) + ptr->size;	// Merging with the previous memEntry free block
+		before->size += sizeof(memEntry) + ptr->size;	// Combining with the previous memEntry free block
 		before->next  = 	ptr->next;
 		ptr->isFree   = 		1;
 		before->next  = 	ptr->next;
@@ -117,7 +117,6 @@ void myFree(void * p, char * fn, int ln){
 			ptr->next->prev = before;
 		}
 		SLRemove(sl, p);
-		//printf( "Freeing block %#x combining with predecessor new size is %d.\n", p, before->size );
 	} else{   
 		if (ptr->isFree == 0) {
 		    SLRemove(sl, p);
@@ -137,7 +136,6 @@ void myFree(void * p, char * fn, int ln){
 		}
 		
 		SLRemove(sl, p);
-		//printf( "freeing block %#x merging with successor new size is %d.\n", p, before->size );
 	}
 }
 
