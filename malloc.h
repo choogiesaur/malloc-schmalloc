@@ -17,6 +17,9 @@ struct mem_entry {
 };
 typedef struct mem_entry memEntry;
 
+/*oooooh ahhhh*/
+void pretty_colors();
+
 /*
  * Our free function. Takes a void pointer to a memory chunk to be freed, a character string
  * for the filename, and an int for the line number. Doesn't return anything but will print
@@ -45,6 +48,4 @@ void * bogo_malloc(char *favorite_color);
  */
 int ptrcmp(void * ptr1, void * ptr2);
 
-/*oooooh ahhhh*/
-void pretty_colors();
 #endif
