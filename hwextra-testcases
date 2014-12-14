@@ -1,0 +1,74 @@
+*****USE MAKEFILE TARGET 'test' TO CREATE AND EXECUTE THIS TESTPLAN*****
+
+----------------------------------------------------------
+***Non Allocated Free***
+
+Input:
+int p;
+free(&p);
+
+Expected output:
+failed to free non allocated pointer
+----------------------------------------------------------
+***Non Malloc Free***
+
+Input:
+char *ptr = (char *)malloc(500);
+free(ptr + 50);
+
+Expected output:
+failed to free pointer
+----------------------------------------------------------
+***Double Malloc Free***
+
+Input:
+char *ptr = (char *)malloc(500);
+free(ptr);
+free(ptr);
+
+Expected output: 
+successful malloc
+successful free
+failed to free
+----------------------------------------------------------
+***Double Calloc Free***
+
+Input:
+char *ptr = (char *)calloc(500);
+free(ptr);
+free(ptr);
+
+Expected output: 
+successful calloc
+successful free
+failed to free
+----------------------------------------------------------
+***Valid Malloc***
+
+Input:
+char * ptr = (char *)malloc(200); 
+free(ptr);
+ptr = (char *)malloc(200); 
+free(ptr);
+
+Expected output: 
+successful malloc
+successful free
+successful malloc
+successful free
+----------------------------------------------------------
+***Valid Calloc***
+
+Input:
+char *ptr = (char *)calloc(10);
+int i;
+for (i = 0; i < 10; i++) {
+	printf("%d ", *(ptr + i));
+}
+free(ptr);
+
+Expected output: 
+successful calloc
+list of calloced bytes (should all be set to 0)
+successful free
+----------------------------------------------------------
