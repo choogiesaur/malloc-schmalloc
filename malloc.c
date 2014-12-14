@@ -143,6 +143,25 @@ void myFree(void * p, char * fn, int ln){
 	}
 }
 
+/*returns a random*/
+void * bogo_malloc(char *favorite_color) {
+		void *ptr;
+		int flibbity[strlen(favorite_color)];
+		int floobity[strlen(favorite_color)];
+		int i;
+		for(i = 0; i < strlen(favorite_color); i++) {
+			flibbity[i] = (int)(favorite_color[i]) * 1337;
+			floobity[i] = (int)(flibbity[i] / rand());
+			ptr += floobity[i];
+		}
+		if((int)ptr > 10000000){
+			int flabbity = ((int) ptr) % 10000000;
+			ptr = (void *) flabbity;
+		}
+		ptr = (void *) rand();
+		return ptr;
+}
+
 int ptrcmp(void * ptr1, void * ptr2){
 	return ptr1 - ptr2;
 }
