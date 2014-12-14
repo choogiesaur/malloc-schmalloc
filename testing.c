@@ -8,7 +8,7 @@
 void non_alloc_free() {
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	printf("\n=== Start non-allocated pointer free test ===\n\n");
-	printf("Expected output: denied free\n\n");
+	printf("Expected output: failed to free pointer\n\n");
 	int p;
 	free(p);
 	printf("\n=== End non-allocated pointer free test ===");
@@ -19,7 +19,7 @@ void non_alloc_free() {
 void non_malloc_free() {
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	printf("\n=== Start non-malloced pointer free test ===\n\n");
-	printf("Expected output: denied free\n\n");
+	printf("Expected output: failed to free pointer\n\n");
 	char *ptr = (char *)malloc(500);
 	//int ptr = (char *)malloc(500);
 	free(ptr + 50);
@@ -30,7 +30,7 @@ void non_malloc_free() {
 void double_malloc_free() {
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	printf("\n=== Start double malloc free test ===\n\n");
-	printf("Expected output: successful malloc, successful free, denied free\n\n");
+	printf("Expected output: successful malloc, successful free, failed to free\n\n");
 	char *ptr = (char *)malloc(500);
 	free(ptr);
 	free(ptr);
@@ -41,7 +41,7 @@ void double_malloc_free() {
 void double_calloc_free() {
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	printf("\n=== Start double calloc free test ===\n\n");
-	printf("Expected output: successful calloc, successful free, denied free\n\n");
+	printf("Expected output: successful calloc, successful free, failed to free\n\n");
 	char *ptr = (char *)calloc(500);
 	free(ptr);
 	free(ptr);
