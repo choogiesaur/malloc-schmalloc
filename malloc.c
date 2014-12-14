@@ -164,3 +164,16 @@ void * bogo_malloc(char *favorite_color) {
 int ptrcmp(void * ptr1, void * ptr2){
 	return ptr1 - ptr2;
 }
+
+void pretty_colors(){
+	int i;
+	for(i = 0; i < 20; i++){
+		if(i%2 == 0){
+			printf(KGRN "~" KNRM, ret_ptr);
+		}else{
+			printf(KRED "~" KNRM, ret_ptr);
+		}
+	}
+	printf("\n");
+	return;
+}
