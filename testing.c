@@ -16,13 +16,15 @@ void non_alloc_free() {
 
 }
 
-void non_malloc_free() {
+void non_malloc_calloc_free() {
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-	printf("\n=== Start non-malloced pointer free test ===\n\n");
-	printf("Expected output: failed to free pointer\n\n");
-	char *ptr = (char *)malloc(500);
+	printf("\n=== Start non-malloc'd/non-calloc'd pointer free test ===\n\n");
+	printf("Expected output: successful malloc, failed to free, successful calloc, failed to free\n\n");
+	char *ptr = (char *)malloc(100);
 	free(ptr + 50);
-	printf("\n=== End non-malloced pointer free test ===");
+	char *ptr2 = (char *)calloc(100);
+	free(ptr + 50);
+	printf("\n=== End non-malloc'd/non-calloc'd pointer free test ===");
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
 }
 
@@ -77,7 +79,7 @@ void valid_calloc() {
 
 int main(int argc, char const *argv[]) {
 	non_alloc_free();
-	non_malloc_free();
+	non_malloc_calloc_free();
 	double_malloc_free();
 	double_calloc_free();
 	valid_malloc();
