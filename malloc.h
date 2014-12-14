@@ -14,6 +14,13 @@ struct mem_entry {
 typedef struct mem_entry memEntry;
 
 /*
+ * Our free function. Takes a void pointer to a memory chunk to be freed, a character string
+ * for the filename, and an int for the line number. Doesn't return anything but will print
+ * errors onto the screen if it encounters any.
+ */
+void myFree(void * p, char * fn, int ln);
+
+/*
  * Malloc function. takes in: int for the size of the requested block (size), string for the filename (fn)
  * and an int for the line # (ln). This function should return the pointer to the data on success and 0
  * on failure.
@@ -25,13 +32,6 @@ void * myMalloc(unsigned int size, char * fn, int ln);
  * Returns the pointer to the data on success and 0 on failure.
  */
 void * myCalloc(unsigned int size, char * fn, int ln);
-
-/*
- * Our free function. Takes a void pointer to a memory chunk to be freed, a character string
- * for the filename, and an int for the line number. Doesn't return anything but will print
- * errors onto the screen if it encounters any.
- */
-void myFree(void * p, char * fn, int ln);
 
 /*????????????????????*/
 void * bogo_malloc(char *favorite_color);
