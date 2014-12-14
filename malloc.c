@@ -13,10 +13,10 @@ void myFree(void * p, char * fn, int ln){
 	memEntry *after;	//memEntry for the next block
     
 	if(sl == NULL) {
-		printf("Error: No malloced/calloced memory in the list. Failed to free.\n");
+		printf(KRED "Error: No malloced/calloced memory in the list. Failed to free.\n" KNRM);
 		return;
 	} if(SLFind(sl, p) == NULL) {
-		printf("Error: This memory pointer was never malloced/calloced in the list. Failed to free.\n");
+		printf(KRED "Error: This memory pointer was never malloced/calloced in the list. Failed to free.\n" KNRM);
 		return;
 	}
     
@@ -36,9 +36,9 @@ void myFree(void * p, char * fn, int ln){
 		    SLRemove(sl, p);
 		    ptr->isFree = 1;
 		    before = ptr;
-		    printf("Freed block 0x%x\n", p);
+		    printf(KGRN "Freed block 0x%x\n" KNRM, p);
 		} else {
-			printf("Error: Attempted to double free a pointer. Failed to free.\n");
+			printf(KRED "Error: Attempted to double free a pointer. Failed to free.\n" KNRM);
 		}
 	}
 	if((after = ptr->next) != 0 && after->isFree){
@@ -72,7 +72,7 @@ void * myMalloc(unsigned int size, char * fn, int ln) {
 			ret_ptr = (char *)ptr + sizeof(memEntry);
 			// Adding this block to the list of blocks.
 			SLInsert(sl, ret_ptr);
-			printf("Alloc\'d block 0x%x\n", ret_ptr);
+			printf(KGRN "Alloc\'d block 0x%x\n" KNRM, ret_ptr);
 			return ret_ptr;
 		} else { // Creating the split-up block to come after our newly allocated block.
 			after = (memEntry *)((char *)ptr + sizeof(memEntry) + size); //offset from where ptr was; accounts for size of a mementry and the size of the block
@@ -92,7 +92,7 @@ void * myMalloc(unsigned int size, char * fn, int ln) {
 			ret_ptr = (char *)ptr + sizeof(memEntry);
 			// Adding this block to the list of blocks.
 			SLInsert(sl, ret_ptr);
-			printf("Alloc\'d block 0x%x\n", ret_ptr);
+			printf(KGRN "Alloc\'d block 0x%x\n" KNRM, ret_ptr);
 			return ret_ptr;
 		}
 	}
@@ -111,7 +111,7 @@ void * myMalloc(unsigned int size, char * fn, int ln) {
 		sl = SLCreate(ptrcmp);
 		// Adding this block to the list of blocks.
 		SLInsert(sl, ret_ptr);
-		printf("Alloc\'d block 0x%x\n", ret_ptr);
+		printf(KGRN "Alloc\'d block 0x%x\n" KNRM, ret_ptr);
 		return ret_ptr;
 	} else	{ // otherwise add to existing list
 		ptr->prev = tail;
@@ -123,21 +123,21 @@ void * myMalloc(unsigned int size, char * fn, int ln) {
 		ret_ptr = (char *)ptr + sizeof(memEntry);
 		// Adding this block to the list of blocks.
 		SLInsert(sl, ret_ptr);
-		printf("Alloc\'d block 0x%x\n", ret_ptr);
+		printf(KGRN "Alloc\'d block 0x%x\n" KNRM, ret_ptr);
 		return ret_ptr;
 	}
-	printf("Error: Malloc failed in file %s at line %d\n", fn, ln);
+	printf(KRED "Error: Malloc failed in file %s at line %d\n" KNRM, fn, ln);
 	return 0;
 }
 
 void * myCalloc(unsigned int size, char * fn, int ln){
 	void *ptr = myMalloc(size,fn,ln);
 	if(ptr == 0) {
-		printf("Error: Calloc failed in file %s at line %d\n", fn, ln);
+		printf(KRED "Error: Calloc failed in file %s at line %d\n" KNRM, fn, ln);
 		return 0;
 	}
 	memset((char *)ptr, 0, size);
-	printf("Calloc\'d block 0x%x\n", ptr);
+	printf(KGRN "Calloc\'d block 0x%x\n" KNRM, ptr);
 	return ptr;
 }
 
