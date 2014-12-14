@@ -8,9 +8,9 @@
 void non_alloc_free() {
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	printf("\n=== Start non-allocated pointer free test ===\n\n");
-	printf("Expected output: failed to free pointer\n\n");
+	printf("Expected output: failed to free non allocated pointer\n\n");
 	int p;
-	free(p);
+	free(&p);
 	printf("\n=== End non-allocated pointer free test ===");
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
 
