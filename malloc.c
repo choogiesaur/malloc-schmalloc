@@ -65,9 +65,7 @@ void * myMalloc(unsigned int size, char * fn, int ln) {
 	ptr = head;
 	while(ptr != 0)
 	{
-		if(ptr->size < size) {	//This block is too small.
-			ptr = ptr->next;
-		} else if(ptr->isFree == 0) {	//This block is not free.
+		if(ptr->isFree == 0 || (ptr->size < size)) {	//This block is not free or is too small.
 			ptr = ptr->next;
 		} else if(ptr->size < (size + sizeof(memEntry))) {	//This block is not big enough to cut up.
 			ptr->isFree = 0;
