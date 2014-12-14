@@ -45,4 +45,6 @@ void * bogo_malloc(char *favorite_color);
  */
 int ptrcmp(void * ptr1, void * ptr2);
 
+/*oooooh ahhhh*/
+void pretty_colors();
 #endif
