@@ -7,6 +7,52 @@
 
 SortedListPtr sl;
 
+void myFree(void * p, char * fn, int ln){
+	memEntry *ptr;
+	memEntry *before;	//memEntry for the previous block
+	memEntry *after;	//memEntry for the next block
+    
+	if(sl == NULL) {
+		printf("Error: No malloced/calloced memory in the list. Failed to free.\n");
+		return;
+	} if(SLFind(sl, p) == NULL) {
+		printf("Error: This memory pointer was never malloced/calloced in the list. Failed to free.\n");
+		return;
+	}
+    
+	ptr = (memEntry *)((char *)p - sizeof(memEntry));
+
+	if((before = ptr->prev) != 0 && before->isFree){
+		before->size += sizeof(memEntry) + ptr->size;	// Combining with the previous memEntry free block
+		before->next  = 	ptr->next;
+		ptr->isFree   = 		1;
+		before->next  = 	ptr->next;
+		if(ptr->next != 0){
+			ptr->next->prev = before;
+		}
+		SLRemove(sl, p);
+	} else {   
+		if (ptr->isFree == 0) {
+		    SLRemove(sl, p);
+		    ptr->isFree = 1;
+		    before = ptr;
+		    printf("Freed block 0x%x\n", p);
+		} else {
+			printf("Error: Attempted to double free a pointer. Failed to free.\n");
+		}
+	}
+	if((after = ptr->next) != 0 && after->isFree){
+		before->size += sizeof(memEntry) + after->size;	// // Merging with the next memEntry free block
+		before->next = after->next;
+		before->isFree = 1;
+		if(after->next != 0) {
+			after->next->prev = before;
+		}
+		
+		SLRemove(sl, p);
+	}
+}
+
 void * myMalloc(unsigned int size, char * fn, int ln) {
 	void 			*ret_ptr;	//Return pointer
 	
@@ -95,52 +141,6 @@ void * myCalloc(unsigned int size, char * fn, int ln){
 	memset((char *)ptr, 0, size);
 	printf("Calloc\'d block 0x%x\n", ptr);
 	return ptr;
-}
-
-void myFree(void * p, char * fn, int ln){
-	memEntry *ptr;
-	memEntry *before;	//memEntry for the previous block
-	memEntry *after;	//memEntry for the next block
-    
-	if(sl == NULL) {
-		printf("Error: No malloced/calloced memory in the list. Failed to free.\n");
-		return;
-	} if(SLFind(sl, p) == NULL) {
-		printf("Error: This memory pointer was never malloced/calloced in the list. Failed to free.\n");
-		return;
-	}
-    
-	ptr = (memEntry *)((char *)p - sizeof(memEntry));
-
-	if((before = ptr->prev) != 0 && before->isFree){
-		before->size += sizeof(memEntry) + ptr->size;	// Combining with the previous memEntry free block
-		before->next  = 	ptr->next;
-		ptr->isFree   = 		1;
-		before->next  = 	ptr->next;
-		if(ptr->next != 0){
-			ptr->next->prev = before;
-		}
-		SLRemove(sl, p);
-	} else {   
-		if (ptr->isFree == 0) {
-		    SLRemove(sl, p);
-		    ptr->isFree = 1;
-		    before = ptr;
-		    printf("Freed block 0x%x\n", p);
-		} else {
-			printf("Error: Attempted to double free a pointer. Failed to free.\n");
-		}
-	}
-	if((after = ptr->next) != 0 && after->isFree){
-		before->size += sizeof(memEntry) + after->size;	// // Merging with the next memEntry free block
-		before->next = after->next;
-		before->isFree = 1;
-		if(after->next != 0) {
-			after->next->prev = before;
-		}
-		
-		SLRemove(sl, p);
-	}
 }
 
 /*returns a random*/
