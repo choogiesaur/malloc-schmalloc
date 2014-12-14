@@ -166,14 +166,14 @@ int ptrcmp(void * ptr1, void * ptr2){
 }
 
 void pretty_colors(){
+	printf("\n");
 	int i;
-	for(i = 0; i < 20; i++){
+	for(i = 0; i < 90; i++){
 		if(i%2 == 0){
-			printf(KGRN "~" KNRM, ret_ptr);
+			printf(KGRN "~" KNRM);
 		}else{
-			printf(KRED "~" KNRM, ret_ptr);
+			printf(KRED "~" KNRM);
 		}
 	}
-	printf("\n");
 	return;
 }
