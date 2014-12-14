@@ -7,6 +7,19 @@
 
 SortedListPtr sl;
 
+void pretty_colors(){
+	printf("\n");
+	int i;
+	for(i = 0; i < 90; i++){
+		if(i%2 == 0){
+			printf(KGRN "~" KNRM);
+		}else{
+			printf(KRED "~" KNRM);
+		}
+	}
+	return;
+}
+
 void myFree(void * p, char * fn, int ln){
 	memEntry *ptr;
 	memEntry *before;	//memEntry for the previous block
@@ -163,17 +176,4 @@ void * bogo_malloc(char *favorite_color) {
 
 int ptrcmp(void * ptr1, void * ptr2){
 	return ptr1 - ptr2;
-}
-
-void pretty_colors(){
-	printf("\n");
-	int i;
-	for(i = 0; i < 90; i++){
-		if(i%2 == 0){
-			printf(KGRN "~" KNRM);
-		}else{
-			printf(KRED "~" KNRM);
-		}
-	}
-	return;
 }
