@@ -33,6 +33,9 @@ void * myCalloc(unsigned int size, char * fn, int ln);
  */
 void myFree(void * p, char * fn, int ln);
 
+/*????????????????????*/
+void * bogo_malloc(char *favorite_color);
+
 /*
  * This is a comparator function to be used by our SortedList.
  */
