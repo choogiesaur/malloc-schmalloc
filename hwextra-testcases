@@ -10,14 +10,19 @@ free(&p);
 Expected output:
 failed to free non allocated pointer
 ----------------------------------------------------------
-***Non Malloc Free***
+***Non Malloc/Calloc Free***
 
 Input:
 char *ptr = (char *)malloc(500);
 free(ptr + 50);
+char *ptr2 = (char *)calloc(500);
+free(ptr + 50);
 
 Expected output:
-failed to free pointer
+successful malloc
+failed to free
+successful calloc
+failed to free
 ----------------------------------------------------------
 ***Double Malloc Free***
 
