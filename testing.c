@@ -6,18 +6,19 @@
 #define free(x) myFree(x, __FILE__, __LINE__)
 
 void non_alloc_free() {
-	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	pretty_colors();
 	printf("\n=== Start non-allocated pointer free test ===\n\n");
 	printf("Expected output: failed to free non allocated pointer\n\n");
 	int p;
 	free(&p);
 	printf("\n=== End non-allocated pointer free test ===");
-	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+	pretty_colors();
+	printf("\n\n");
 
 }
 
 void non_malloc_calloc_free() {
-	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	pretty_colors();
 	printf("\n=== Start non-malloc'd/non-calloc'd pointer free test ===\n\n");
 	printf("Expected output: successful malloc, failed to free, successful calloc, failed to free\n\n");
 	char *ptr = (char *)malloc(100);
@@ -25,33 +26,36 @@ void non_malloc_calloc_free() {
 	char *ptr2 = (char *)calloc(100);
 	free(ptr2 + 50);
 	printf("\n=== End non-malloc'd/non-calloc'd pointer free test ===");
-	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+	pretty_colors();
+	printf("\n\n");
 }
 
 void double_malloc_free() {
-	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	pretty_colors();
 	printf("\n=== Start double malloc free test ===\n\n");
 	printf("Expected output: successful malloc, successful free, failed to free\n\n");
 	char *ptr = (char *)malloc(500);
 	free(ptr);
 	free(ptr);
 	printf("\n=== End double malloc free test ===");
-	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+	pretty_colors();
+	printf("\n\n");
 }
 
 void double_calloc_free() {
-	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	pretty_colors();
 	printf("\n=== Start double calloc free test ===\n\n");
 	printf("Expected output: successful calloc, successful free, failed to free\n\n");
 	char *ptr = (char *)calloc(500);
 	free(ptr);
 	free(ptr);
 	printf("\n=== End double calloc free test ===");
-	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+	pretty_colors();
+	printf("\n\n");
 }
 
 void valid_malloc() {
-	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	pretty_colors();
 	printf("\n=== Start valid malloc test ===\n\n");
 	printf("Expected output: successful malloc, successful free, successful malloc, successful free\n\n");
 	char * ptr = (char *)malloc(200); 
@@ -59,11 +63,12 @@ void valid_malloc() {
 	ptr = (char *)malloc(200); 
 	free(ptr);
 	printf("\n=== End valid malloc test ===");
-	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+	pretty_colors();
+	printf("\n\n");
 }
 
 void valid_calloc() {
-	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	pretty_colors();
 	printf("\n=== Start valid calloc test ===\n\n");
 	printf("Expected output: successful calloc, list of bytes (all should be 0), successful free\n\n");
 	char *ptr = (char *)calloc(10);
@@ -74,7 +79,8 @@ void valid_calloc() {
 	printf("\n");
 	free(ptr);
 	printf("\n=== End valid calloc test ===");
-	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+	pretty_colors();
+	printf("\n\n");
 }
 
 int main(int argc, char const *argv[]) {
