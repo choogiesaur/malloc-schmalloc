@@ -20,6 +20,7 @@ sorted-list.o: sorted-list.c sorted-list.h
 
 #memory.o: memory.c memory.h
 #	$(COMPILER) $(CCFLAGS) -c memory.c
+#testpush!!!!!!!!
 
 testing.o: testing.c
 	$(COMPILER) $(CCFLAGS) -c testing.c
