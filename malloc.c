@@ -30,6 +30,7 @@ void myFree(void * p, char * fn, int ln){
 		if(ptr->next != 0){
 			ptr->next->prev = before;
 		}
+
 		SLRemove(sl, p);
 	} else {   
 		if (ptr->isFree == 0) {
@@ -98,7 +99,7 @@ void * myMalloc(unsigned int size, char * fn, int ln) {
 	}
 	ptr = (memEntry *)sbrk(size + sizeof(memEntry)); //Extending the heap by (size + sizeof(memEntry) bytes if there isn't enough space in any free blocks
 	if(ptr == (void *)-1) {
-		printf("Error: Malloc failed in file %s at line %d\n", fn, ln);
+		printf(KRED "Error: Malloc failed in file %s at line %d\n" KNRM, fn, ln);
 		return 0;
 	} else if(tail == 0) { // tail is null, adds first one
 		ptr->prev = 0;
