@@ -21,7 +21,6 @@ void non_malloc_free() {
 	printf("\n=== Start non-malloced pointer free test ===\n\n");
 	printf("Expected output: failed to free pointer\n\n");
 	char *ptr = (char *)malloc(500);
-	//int ptr = (char *)malloc(500);
 	free(ptr + 50);
 	printf("\n=== End non-malloced pointer free test ===");
 	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
