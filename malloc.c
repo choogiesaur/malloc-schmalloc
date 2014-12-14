@@ -17,13 +17,13 @@ void * myMalloc(unsigned int size, char * fn, int ln) {
 	static memEntry 	*tail = 0;	//points to back of memEntry list
     
 	ptr = head;
-	while ( ptr != 0 )
+	while(ptr != 0)
 	{
-		if (ptr->size < size) {	//This block is too small.
+		if(ptr->size < size) {	//This block is too small.
 			ptr = ptr->next;
-		} else if (ptr->isFree == 0) {	//This block is not free.
+		} else if(ptr->isFree == 0) {	//This block is not free.
 			ptr = ptr->next;
-		} else if (ptr->size < (size + sizeof(memEntry))) {	//This block is not big enough to cut up.
+		} else if(ptr->size < (size + sizeof(memEntry))) {	//This block is not big enough to cut up.
 			ptr->isFree = 0;
 			ret_ptr = (char *)ptr + sizeof(memEntry);
 			// Adding this block to the list of blocks.
@@ -52,15 +52,17 @@ void * myMalloc(unsigned int size, char * fn, int ln) {
 			return ret_ptr;
 		}
 	}
-	ptr = (memEntry *)sbrk(sizeof(memEntry) + size);
-	if (ptr == (void *)-1) {
+	ptr = (memEntry *)sbrk(size + sizeof(memEntry)); //Extending the heap by (size + sizeof(memEntry) bytes if there isn't enough space in any free blocks
+	if(ptr == (void *)-1) {
+		printf("Error: Malloc failed in file %s at line %d\n", fn, ln);
 		return 0;
-	} else if (tail == 0) { // tail is null, adds first one
+	} else if(tail == 0) { // tail is null, adds first one
 		ptr->prev = 0;
 		ptr->next = 0;
 		ptr->size = size;
 		ptr->isFree = 0;
-		head = tail = ptr;
+		head = ptr;
+		tail = ptr;
 		ret_ptr = (char *)ptr + sizeof(memEntry);
 		sl = SLCreate(ptrcmp);
 		// Adding this block to the list of blocks.
@@ -86,7 +88,7 @@ void * myMalloc(unsigned int size, char * fn, int ln) {
 
 void * myCalloc(unsigned int size, char * fn, int ln){
 	void *ptr = myMalloc(size,fn,ln);
-	if (ptr == 0) {
+	if(ptr == 0) {
 		printf("Error: Calloc failed in file %s at line %d\n", fn, ln);
 		return 0;
 	}
@@ -100,7 +102,7 @@ void myFree(void * p, char * fn, int ln){
 	memEntry *before;	//memEntry for the previous block
 	memEntry *after;	//memEntry for the next block
     
-	if (sl == NULL) {
+	if(sl == NULL) {
 		printf("Error: No malloced/calloced memory in the list. Failed to free.\n");
 		return;
 	} if(SLFind(sl, p) == NULL) {
@@ -110,7 +112,7 @@ void myFree(void * p, char * fn, int ln){
     
 	ptr = (memEntry *)((char *)p - sizeof(memEntry));
 
-	if ( (before = ptr->prev) != 0 && before->isFree ){
+	if((before = ptr->prev) != 0 && before->isFree){
 		before->size += sizeof(memEntry) + ptr->size;	// Combining with the previous memEntry free block
 		before->next  = 	ptr->next;
 		ptr->isFree   = 		1;
@@ -119,7 +121,7 @@ void myFree(void * p, char * fn, int ln){
 			ptr->next->prev = before;
 		}
 		SLRemove(sl, p);
-	} else{   
+	} else {   
 		if (ptr->isFree == 0) {
 		    SLRemove(sl, p);
 		    ptr->isFree = 1;
@@ -129,7 +131,7 @@ void myFree(void * p, char * fn, int ln){
 			printf("Error: Attempted to double free a pointer. Failed to free.\n");
 		}
 	}
-	if ( (after = ptr->next) != 0 && after->isFree ){
+	if((after = ptr->next) != 0 && after->isFree){
 		before->size += sizeof(memEntry) + after->size;	// // Merging with the next memEntry free block
 		before->next = after->next;
 		before->isFree = 1;
