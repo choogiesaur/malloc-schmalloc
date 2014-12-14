@@ -42,7 +42,9 @@ void * myMalloc(unsigned int size, char * fn, int ln) {
 			after->isFree = 1;
 			ptr->size = size;
 			ptr->isFree = 0;
-			tail = (ptr == tail) ? after : tail;
+			if (ptr == tail) {
+				tail = after;
+			}
 			ret_ptr = (char *)ptr + sizeof(memEntry);
 			// Adding this block to the list of blocks.
 			SLInsert(sl, ret_ptr);
