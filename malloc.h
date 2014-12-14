@@ -1,6 +1,10 @@
 #ifndef MALLOC_H
 #define MALLOC_H
 
+#define KNRM  "\x1B[0m"
+#define KRED  "\x1B[31m"
+#define KGRN  "\x1B[32m"
+
 /*
  * Memory entry struct. Holds the size of the block, whether it is free or not, and pointers
  * to the next and the previous memory entry structs.
